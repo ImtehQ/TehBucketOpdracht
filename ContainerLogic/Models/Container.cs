@@ -4,8 +4,8 @@ using System.Text;
 
 namespace ContainerBackend.Models
 {
-    public delegate void OnContainerOverflowDelegate(object sender, int overflowAmount);
-    public delegate void OnContainerOverflowContainerDelegate(object sender, int overflowAmount, Container container);
+    public delegate void OnContainerOverflowDelegate(object sender, int overflowAmount, bool ignoreOverflow);
+    public delegate void OnContainerOverflowContainerDelegate(object sender, int overflowAmount, Container container, bool overwriteOverflow);
 
     public enum ContentStatus
     {
@@ -50,7 +50,8 @@ namespace ContainerBackend.Models
             }
         }
 
-        internal bool ignoreOverflow;
+        private bool ignoreOverflow;
+        public bool IgnoreOverflow { get { return ignoreOverflow; }  internal set { ignoreOverflow = value; } }
 
         public void Empty()
         {
@@ -88,7 +89,7 @@ namespace ContainerBackend.Models
                 //Overflow detected
                 if (overwriteOverflow == false && ignoreOverflow == false)
                 {
-                    OnContainerOverflow?.Invoke(this, overflowAmount);
+                    OnContainerOverflow?.Invoke(this, overflowAmount, overwriteOverflow);
                     return false;
                 }
                 else
@@ -106,6 +107,8 @@ namespace ContainerBackend.Models
 
         public bool Fill(Container container, bool overwriteOverflow = false)
         {
+            if (container == this)
+                return false;
             int fillLimit = FillLimit();
             int overflowAmount = container.Content - fillLimit;
 
@@ -114,7 +117,7 @@ namespace ContainerBackend.Models
                 //Overflow detected
                 if (overwriteOverflow == false && ignoreOverflow == false)
                 {
-                    OnContainerOverflowContainer?.Invoke(this, overflowAmount, container);
+                    OnContainerOverflowContainer?.Invoke(this, overflowAmount, container, overwriteOverflow);
                     return false;
                 }
                 else
@@ -142,7 +145,7 @@ namespace ContainerBackend.Models
                 //Overflow detected
                 if (overwriteOverflow == false && ignoreOverflow == false)
                 {
-                    OnContainerOverflowContainer?.Invoke(this, overflowAmount, container);
+                    OnContainerOverflowContainer?.Invoke(this, overflowAmount, container, overwriteOverflow);
                     return false;
                 }
                 else

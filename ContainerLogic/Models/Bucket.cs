@@ -31,7 +31,7 @@ namespace ContainerBackend.Models
         {
             Limits(capacity);
             base.Content = content;
-            base.ignoreOverflow = ignoreOverflow;
+            base.IgnoreOverflow = ignoreOverflow;
         }
     }
 }
