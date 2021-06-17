@@ -1,4 +1,5 @@
 ﻿using ContainerBackend.Models;
+using ContainerBackend.Statics;
 using System;
 using System.Collections.Generic;
 
@@ -56,7 +57,7 @@ namespace TehBucketOpdracht
         //        bucket.OnContainerOverflow += Bucket_OnContainerOverflow;
         //        buckets.Add(bucket);
 
-        //        content = bucket.Content; 
+        //        content = bucket.Content;
         //        capacity = bucket.Capacity;
         //    }
         //    else if (containerType == ContainerType.RainBarrel)
@@ -207,7 +208,7 @@ namespace TehBucketOpdracht
         static void Main(string[] args)
         {
             Console.WriteLine("Hello Container World!");
-            //CreateBarrel();
+           // CreateBarrel();
 
             CreateAll();
             Console.WriteLine("========================");
@@ -219,8 +220,7 @@ namespace TehBucketOpdracht
             Console.WriteLine("========================");
 
             Console.ReadLine();
-            
-            Console.ReadLine();
+
         }
 
         /// <summary>
@@ -230,7 +230,7 @@ namespace TehBucketOpdracht
         {
             for (int i = 0; i < 5; i++)
             {
-                Bucket bucket = new Bucket(r.Next(10, 14), r.Next(0, 15));
+                Bucket bucket = new Bucket(r.Next(10, 14), r.Next(0, 15), r.NextBool());
                 bucket.OnContainerOverflow += Bucket_OnContainerOverflow;
                 bucket.OnContainerOverflowContainer += Bucket_OnContainerOverflowContainer;
                 bucket.Id = i;
@@ -269,6 +269,7 @@ namespace TehBucketOpdracht
                 Console.WriteLine($"Id: {buckets[i].Id}");
                 Console.WriteLine($"Capacity: {buckets[i].Capacity}");
                 Console.WriteLine($"Content: {buckets[i].Content}");
+                Console.WriteLine($"IgnoreOverflow: {buckets[i].IgnoreOverflow}");
                 Console.WriteLine("_________________________");
             }
 

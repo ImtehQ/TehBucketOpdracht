@@ -13,17 +13,14 @@ namespace ContainerBackend.Models
         public RainBarrel(RainBarrelSize capacity)
         {
             base.Capacity = (int)capacity;
+            base.Content = 0;
+            base.IgnoreOverflow = false;
         }
         public RainBarrel(RainBarrelSize capacity, int content)
         {
             base.Capacity = (int)capacity;
-            base.Content = content;
-        }
-        public RainBarrel(RainBarrelSize capacity, int content, bool ignoreOverflow)
-        {
-            base.Capacity = (int)capacity;
-            base.Content = content;
-            base.IgnoreOverflow = ignoreOverflow;
+            base.Content = content.Limit(0, (int)capacity);
+            base.IgnoreOverflow = false;
         }
     }
 }

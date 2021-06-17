@@ -6,31 +6,23 @@ namespace ContainerBackend.Models
 {
     public class Bucket : Container
     {
-        private void Limits(int capacity)
-        {
-            if (capacity < 10)
-            {
-                base.Capacity = 10;
-            }
-            else if (capacity > 12)
-            {
-                base.Capacity = 12;
-            }
-        }
+        private int minLimit = 10;
+        private int maxLimit = 12;
 
         public Bucket(int capacity)
         {
-            Limits(capacity);
+            base.Capacity = capacity.Limit(minLimit, maxLimit);
+            base.Content = 0;
         }
         public Bucket(int capacity, int content)
         {
-            Limits(capacity);
-            base.Content = content;
+            base.Capacity = capacity.Limit(minLimit, maxLimit);
+            base.Content = content.Limit(0, maxLimit);
         }
         public Bucket(int capacity, int content, bool ignoreOverflow)
         {
-            Limits(capacity);
-            base.Content = content;
+            base.Capacity = capacity.Limit(minLimit, maxLimit);
+            base.Content = content.Limit(0, maxLimit);
             base.IgnoreOverflow = ignoreOverflow;
         }
     }
